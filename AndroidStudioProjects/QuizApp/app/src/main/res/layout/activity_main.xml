@@ -8,7 +8,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-
     >
 
     <TextView
@@ -17,18 +16,22 @@
         style="@style/QuestionView" />
 
     <CheckBox
+        android:id = "@+id/q1check1"
         style="@style/AnswerView"
         android:text="@string/q1Check1"/>
 
     <CheckBox
+        android:id = "@+id/q1check2"
         style="@style/AnswerView"
         android:text="@string/q1Check2" />
 
     <CheckBox
+        android:id = "@+id/q1check3"
         style="@style/AnswerView"
         android:text="@string/q1Check3" />
 
     <CheckBox
+        android:id = "@+id/q1check4"
         style="@style/AnswerView"
         android:text="@string/q1Check4"/>
 
@@ -51,18 +54,23 @@
         style="@style/QuestionView" />
 
     <RadioGroup
-        style="@style/AnswerView">
+        style="@style/AnswerView"
+        android:id = "@+id/q3rradiogroup">
         <RadioButton
+            android:id = "@+id/q3radio1"
             style="@style/RadioView"
             android:text="@string/q3Radio1"
             />
         <RadioButton
+            android:id = "@+id/q3radio2"
             style="@style/RadioView"
             android:text="@string/q3Radio2"/>
         <RadioButton
+            android:id = "@+id/q3radio3"
             style="@style/RadioView"
             android:text="@string/q3Radio3"/>
         <RadioButton
+            android:id = "@+id/q3radio4"
             style="@style/RadioView"
             android:text="@string/q3Radio4"/>
     </RadioGroup>
@@ -70,7 +78,6 @@
     <TextView
         android:id = "@+id/question4"
         android:text="@string/q4"
-        android:inputType="number"
         style="@style/QuestionView" />
 
     <EditText
@@ -78,6 +85,7 @@
         style="@style/AnswerView"
         android:layout_width="32dp"
         android:background="#60ffff52"
+        android:inputType="number"
         />
 
     <TextView
@@ -85,42 +93,18 @@
         android:text="@string/q5"
         style="@style/QuestionView" />
 
-
-    <TextView
-        android:id = "@+id/question9"
-        android:text="@string/q9"
-        android:inputType="number"
-        style="@style/QuestionView" />
-
     <EditText
-        android:id = "@+id/question9Edit"
+        android:id = "@+id/question5Edit"
         style="@style/AnswerView"
         android:layout_width="32dp"
         android:background="#60ffff52"
+        android:inputType="number"
         />
-
-
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-    </RelativeLayout>
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text = "Submit"
+        android:text = "@string/submit"
         android:background="#ffd600"
         android:layout_gravity= "center"
         android:onClick="onSubmit"
