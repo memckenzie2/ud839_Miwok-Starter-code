@@ -3,6 +3,8 @@ package com.example.android.quizapp;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -33,19 +35,33 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSubmit(View view) {
         int correct = 0;
+        CheckBox check1Q1 = findViewById(R.id.q1check1);
+        CheckBox check2Q1 = findViewById(R.id.q1check2);
+        CheckBox check3Q1 = findViewById(R.id.q1check3);
+        CheckBox check4Q1 = findViewById(R.id.q1check4);
 
-        if(!allQuestionsAnswer()){
-            //toast
+        EditText editTextQ2 = findViewById(R.id.question2Edit);
+        String responseQ2 = editTextQ2.getText().toString();
+
+        EditText editTextQ4 = findViewById(R.id.question4Edit);
+        String responseQ4 = editTextQ4.getText().toString();
+
+        EditText editTextQ5 = findViewById(R.id.question5Edit);
+        String responseQ5 = editTextQ5.getText().toString();
+
+        boolean checkBoxSelected = check1Q1.isChecked() || check2Q1.isChecked() || check3Q1.isChecked() || check4Q1.isChecked();
+
+        if(allQuestionsAnswer(checkBoxSelected, responseQ2, responseQ4, responseQ5)){
+            Toast toast = new Toast(getApplicationContext());
+            Toast.makeText(getApplicationContext(), "Uh-oh, you're not done! Please answer the questions highlighted in red.",
+                    Toast.LENGTH_LONG).show();
         }
         else{
             //String to store missed questions to player.
             String missedQuestions = "You missed the following questions:\n";
 
             //Question 1, Check boxes 2 and 3 should be the only ones selected
-            CheckBox check1Q1 = findViewById(R.id.q1check1);
-            CheckBox check2Q1 = findViewById(R.id.q1check2);
-            CheckBox check3Q1 = findViewById(R.id.q1check3);
-            CheckBox check4Q1 = findViewById(R.id.q1check4);
+
 
             if (!check1Q1.isChecked() && check2Q1.isChecked() && check3Q1.isChecked() && !check4Q1.isChecked()) {
                 correct += 1;
@@ -54,8 +70,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //Question 2
-            EditText editTextQ2 = findViewById(R.id.question2Edit);
-            String responseQ2 = editTextQ2.getText().toString();
+
 
             if ( responseQ2.toLowerCase() == solutionQ2) {
                 correct += 1;
@@ -67,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             //Question 3
             RadioButton radioCorrectQ3 =  findViewById(R.id.q3radio4);
 
-            if (radioCorrectQ3.isChecked() == true) {
+            if (radioCorrectQ3.isChecked()) {
                 correct += 1;
             }
             else{
@@ -75,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
             }
 
             //Question 4
-            EditText editTextQ4 = findViewById(R.id.question4Edit);
-            String responseQ4 = editTextQ4.getText().toString();
 
             if ( Integer.parseInt(responseQ4) == solutionQ4) {
                 correct += 1;
@@ -87,9 +100,6 @@ public class MainActivity extends AppCompatActivity {
 
             //Question 5
 
-            EditText editTextQ5 = findViewById(R.id.question5Edit);
-            String responseQ5 = editTextQ5.getText().toString();
-
             if ( Integer.parseInt(responseQ5) == solutionQ5) {
                 correct += 1;
             }
@@ -97,7 +107,17 @@ public class MainActivity extends AppCompatActivity {
                 missedQuestions = missedQuestions + "Question 5\n" + questionText5 + "\n";
             }
 
-            double percentCorrect = correct/5 * 100;
+            double percentCorrect = (double)correct/5 * 100;
+            String scoreMessage;
+
+            scoreMessage = "You earned " + Double.toString(percentCorrect) + "%. You got " + Integer.toString(correct) + "/5 correct!";
+
+
+            Toast toast = new Toast(getApplicationContext());
+            Toast.makeText(getApplicationContext(), scoreMessage,
+                    Toast.LENGTH_LONG).show();
+
+
         }
 
     }
@@ -141,7 +161,7 @@ public class MainActivity extends AppCompatActivity {
         int z = rand.nextInt(10) + 1;
         solution = z - aDiv;
 
-        questionText5 = "5. Solve: " + Integer.toString(z) + " - " +  Integer.toString(a) + " ÷ " + "(" + Integer.toString(d) +" + " + Integer.toString(b) + " × " + Integer.toString(c) + ")";
+        questionText5 = "5. Solve: \n\n   " + Integer.toString(z) + " - " +  Integer.toString(a) + " ÷ " + "(" + Integer.toString(d) +" + " + Integer.toString(b) + " × " + Integer.toString(c) + ")";
         displayProb5(questionText5);
         return solution;
     }
@@ -164,23 +184,63 @@ public class MainActivity extends AppCompatActivity {
         int d = rand.nextInt(7) + 1;
         solution = a - b * c + d;
 
-        questionText4 = "4. Solve: " + Integer.toString(a) + " - " +  Integer.toString(b)  + " × " + Integer.toString(c) + "+" + Integer.toString(d);
+        questionText4 = "4. Solve: \n\n   " + Integer.toString(a) + " - " +  Integer.toString(b)  + " × " + Integer.toString(c) + "+" + Integer.toString(d);
         displayProb4(questionText4);
         return solution;
     }
 
 
-    boolean allQuestionsAnswer(){
+    boolean allQuestionsAnswer(boolean checkBoxSelected, String editText2, String editText4, String editText5){
+        boolean emptyAnswer = false;
+
+        TextView q1 = findViewById(R.id.question1);
+        if(!checkBoxSelected){
+
+            q1.setTextColor(Color.RED);
+            emptyAnswer = true;
+        }
+        else{
+            q1.setTextColor(Color.parseColor("#304fff"));
+        }
+
+        TextView q2 = findViewById(R.id.question2);
+        if(TextUtils.isEmpty(editText2)){
+            q2.setTextColor(Color.RED);
+            emptyAnswer = true;
+        }
+        else{
+            q2.setTextColor(Color.parseColor("#304fff"));
+        }
+
         RadioGroup q3Group = findViewById(R.id.q3rradiogroup);
 
+        TextView q3 = findViewById(R.id.question3);
         if(q3Group.getCheckedRadioButtonId() == -1){
-            TextView q3 = findViewById(R.id.question3);
             q3.setTextColor(Color.RED);
+            emptyAnswer = true;
         }
-        //Add in checks for remaining questions
         else{
-            return false;
+            q3.setTextColor(Color.parseColor("#304fff"));
         }
-        return true;
+
+        TextView q4 = findViewById(R.id.question4);
+        if(TextUtils.isEmpty(editText4)){
+            q4.setTextColor(Color.RED);
+            emptyAnswer = true;
+        }
+        else{
+            q4.setTextColor(Color.parseColor("#304fff"));
+        }
+
+        TextView q5 = findViewById(R.id.question5);
+        if(TextUtils.isEmpty(editText5)){
+            q5.setTextColor(Color.RED);
+            emptyAnswer = true;
+        }
+        else{
+            q5.setTextColor(Color.parseColor("#304fff"));
+        }
+
+        return emptyAnswer;
     }
 }
