@@ -23,11 +23,15 @@ public class MainActivity extends AppCompatActivity {
     private int solutionQ5;
     private String questionText5;
 
+    //String to store missed questions for later display to player.
+    private String missedQuestions = "You missed the following questions:\n";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Generates solutions to the random problems
         solutionQ4 = orderOpProb4();
         solutionQ5 = orderOpProb5();
         solutionQ2 = randomQ2();
@@ -35,109 +39,123 @@ public class MainActivity extends AppCompatActivity {
 
     public void onSubmit(View view) {
         int correct = 0;
+
+        //Pulls state of all response views
+        //Response to Question 1
         CheckBox check1Q1 = findViewById(R.id.q1check1);
         CheckBox check2Q1 = findViewById(R.id.q1check2);
         CheckBox check3Q1 = findViewById(R.id.q1check3);
         CheckBox check4Q1 = findViewById(R.id.q1check4);
 
+        //Reduces state of checkboxes to single true/false - true if ANY checkbox checked and false if none selected.
+        boolean checkBoxSelected = check1Q1.isChecked() || check2Q1.isChecked() || check3Q1.isChecked() || check4Q1.isChecked();
+
+        //Response to Question 2
         EditText editTextQ2 = findViewById(R.id.question2Edit);
         String responseQ2 = editTextQ2.getText().toString();
 
+        //Response Question 3
+        RadioGroup q3Group = findViewById(R.id.q3rradiogroup);
+        int radioGroupQ3 = q3Group.getCheckedRadioButtonId();
+
+        //Response to Question 4
         EditText editTextQ4 = findViewById(R.id.question4Edit);
         String responseQ4 = editTextQ4.getText().toString();
 
+        //Response to Question 5
         EditText editTextQ5 = findViewById(R.id.question5Edit);
         String responseQ5 = editTextQ5.getText().toString();
 
-        boolean checkBoxSelected = check1Q1.isChecked() || check2Q1.isChecked() || check3Q1.isChecked() || check4Q1.isChecked();
-
-        if(allQuestionsAnswer(checkBoxSelected, responseQ2, responseQ4, responseQ5)){
+        //Check all questions have a response. If not, highlights unanswered question in red and then displays a toast message
+        if(allQuestionsAnswer(checkBoxSelected, responseQ2, radioGroupQ3, responseQ4, responseQ5)){
             Toast toast = new Toast(getApplicationContext());
             Toast.makeText(getApplicationContext(), "Uh-oh, you're not done! Please answer the questions highlighted in red.",
                     Toast.LENGTH_LONG).show();
         }
+        //If all questions has a response, check answers, score quiz, and display results in a toast message.
         else{
-            //String to store missed questions to player.
-            String missedQuestions = "You missed the following questions:\n";
 
             //Question 1, Check boxes 2 and 3 should be the only ones selected
-
-
-            if (!check1Q1.isChecked() && check2Q1.isChecked() && check3Q1.isChecked() && !check4Q1.isChecked()) {
-                correct += 1;
-            } else{
-                missedQuestions = missedQuestions + "Question 1\n" + R.string.q1 + "\n";
-            }
+            boolean q1Result = markQ1(check1Q1.isChecked(), check2Q1.isChecked(), check3Q1.isChecked(), check4Q1.isChecked());
+            int correctCount = q1Result ? 1 : 0;
+            correct += correctCount;
 
             //Question 2
-
-
-            if ( responseQ2.toLowerCase() == solutionQ2) {
-                correct += 1;
-            }
-            else{
-                missedQuestions = missedQuestions + "Question 2\n" + R.string.q2 + "\n";
-            }
+            boolean q2Result = markQ2(responseQ2);
+            correctCount = q2Result ? 1 : 0;
+            correct += correctCount;
 
             //Question 3
             RadioButton radioCorrectQ3 =  findViewById(R.id.q3radio4);
-
-            if (radioCorrectQ3.isChecked()) {
-                correct += 1;
-            }
-            else{
-                missedQuestions = missedQuestions + "Question 3\n" + R.string.q3 + "\n";
-            }
+            boolean q3Result = markQ3(radioCorrectQ3.isChecked());
+            correctCount = q3Result ? 1 : 0;
+            correct += correctCount;
 
             //Question 4
-
-            if ( Integer.parseInt(responseQ4) == solutionQ4) {
-                correct += 1;
-            }
-            else{
-                missedQuestions = missedQuestions + "Question 4\n" + questionText4 + "\n";
-            }
+            boolean q4Result = markQ4(Integer.parseInt(responseQ4));
+            correctCount = q4Result ? 1 : 0;
+            correct += correctCount;
 
             //Question 5
+            boolean q5Result = markQ5(Integer.parseInt(responseQ5));
+            correctCount = q5Result ? 1 : 0;
+            correct += correctCount;
 
-            if ( Integer.parseInt(responseQ5) == solutionQ5) {
-                correct += 1;
-            }
-            else{
-                missedQuestions = missedQuestions + "Question 5\n" + questionText5 + "\n";
-            }
-
-            double percentCorrect = (double)correct/5 * 100;
-            String scoreMessage;
-
-            scoreMessage = "You earned " + Double.toString(percentCorrect) + "%. You got " + Integer.toString(correct) + "/5 correct!";
-
-
-            Toast toast = new Toast(getApplicationContext());
-            Toast.makeText(getApplicationContext(), scoreMessage,
-                    Toast.LENGTH_LONG).show();
-
-
+            //Calculate score and display as toast message
+            finalScore(correct);
         }
 
     }
 
+    //Updates question 2 Textview with problem statement
+    private void displayProb2(String questionChar) {
+        TextView quantityTextView = findViewById(R.id.question2);
+        quantityTextView.setText("2. What does the " + questionChar + " in the acronym PEMDAS stand for?");
+    }
+
+    //Updates question 5 Textview with problem statement
     private void displayProb5(String problem) {
         TextView quantityTextView = findViewById(R.id.question5);
         quantityTextView.setText(problem);
     }
 
+    //Updates question 5 Textview with problem statement
     private void displayProb4(String problem) {
         TextView quantityTextView = findViewById(R.id.question4);
         quantityTextView.setText(problem);
     }
 
-
     /*
     Chooses a random letter from PEMDAS, updates the question, and assigns the appropriate answer for it.
     */
     public String randomQ2(){
-        String answer = "parentheses";
+        String question = "";
+        String answer = "";
+        Random randNum = new Random();
+        int randAns = randNum.nextInt(5);
+
+        switch(randAns){
+            case 0: question = "P";
+                answer = "parentheses";
+                break;
+            case 1: question = "E";
+                answer = "exponents";
+                break;
+            case 2: question = "M";
+                answer = "multiplication";
+                break;
+            case 3: question = "D";
+                answer = "division";
+                break;
+            case 4: question = "A";
+                answer = "addition";
+                break;
+            case 5: question = "S";
+                answer = "subtraction";
+                break;
+        }
+
+        displayProb2(question);
         return answer;
     }
 
@@ -190,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    boolean allQuestionsAnswer(boolean checkBoxSelected, String editText2, String editText4, String editText5){
+    private boolean allQuestionsAnswer(boolean checkBoxSelected, String editText2, int radioQ3,String editText4, String editText5){
         boolean emptyAnswer = false;
 
         TextView q1 = findViewById(R.id.question1);
@@ -212,10 +230,8 @@ public class MainActivity extends AppCompatActivity {
             q2.setTextColor(Color.parseColor("#304fff"));
         }
 
-        RadioGroup q3Group = findViewById(R.id.q3rradiogroup);
-
         TextView q3 = findViewById(R.id.question3);
-        if(q3Group.getCheckedRadioButtonId() == -1){
+        if(radioQ3 == -1){
             q3.setTextColor(Color.RED);
             emptyAnswer = true;
         }
@@ -243,4 +259,65 @@ public class MainActivity extends AppCompatActivity {
 
         return emptyAnswer;
     }
+
+    private boolean markQ1(boolean check1, boolean check2, boolean check3, boolean check4){
+        if (!check1 && check2 && check3 && !check4) {
+            return true;
+        } else{
+            missedQuestions = missedQuestions + "Question 1\n" + R.string.q1 + "\n";
+            return false;
+        }
+    }
+
+    private boolean markQ2(String responseQ2){
+        if ( responseQ2.toLowerCase() == solutionQ2) {
+            return true;
+        }
+        else{
+            missedQuestions = missedQuestions + "Question 2\n" + R.string.q2 + "\n";
+            return false;
+        }
+    }
+
+    private boolean markQ3(boolean correctQ3){
+        if (correctQ3) {
+            return true;
+        }
+        else{
+            missedQuestions = missedQuestions + "Question 3\n" + R.string.q3 + "\n";
+            return false;
+        }
+    }
+
+    private boolean markQ4(int responseQ4){
+        if ( responseQ4 == solutionQ4) {
+            return true;
+        }
+        else{
+            missedQuestions = missedQuestions + "Question 4\n" + R.string.q4 + "\n";
+            return false;
+        }
+    }
+
+    private boolean markQ5(int responseQ5){
+        if ( responseQ5 == solutionQ5) {
+            return true;
+        }
+        else{
+            missedQuestions = missedQuestions + "Question 5\n" + R.string.q5 + "\n";
+            return false;
+        }
+    }
+
+    private void finalScore(int correct){
+        double percentCorrect = (double)correct/5 * 100;
+        String scoreMessage;
+
+        scoreMessage = "You earned " + Double.toString(percentCorrect) + "%. You got " + Integer.toString(correct) + "/5 correct!";
+
+        Toast toast = new Toast(getApplicationContext());
+        Toast.makeText(getApplicationContext(), scoreMessage,
+                Toast.LENGTH_LONG).show();
+    }
 }
+
