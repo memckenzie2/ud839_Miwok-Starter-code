@@ -288,8 +288,12 @@ public class MainActivity extends AppCompatActivity {
 
     /*
     Checks the response to question 1 against the correct solution.
-    Correct response is 2nd and 3rd checkboxes selected.
+    Correct response is 2nd and 3rd checkboxes selected and none others.
     Returns true if correct.
+    @param check1 is the status of the 1st checkbox option
+    @param check2 is the status of the 2nd checkbox option
+    @param check3 is the status of the 3rd checkbox option
+    @param check4 is the status of the 4th checkbox option
      */
     private boolean markQ1(boolean check1, boolean check2, boolean check3, boolean check4){
         if (!check1 && check2 && check3 && !check4) {
@@ -304,6 +308,7 @@ public class MainActivity extends AppCompatActivity {
     Checks the response to question 2 against the correct solution.
     Correct response is stored in solutionQ2 and is randomly selected from possible PEMDAS values at launch.
     Returns true if correct.
+    @param responseQ2 is the contents of the edittext for question 2.
      */
     private boolean markQ2(String responseQ2){
         if ( responseQ2.toLowerCase().equals(solutionQ2)) {
@@ -315,6 +320,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    Checks the response to question 3 by checking status of correct response (4th option)
+    Returns true if correct.
+    @param responseQ3 is the status of the correct radiobutton option - it is true if selected.
+     */
     private boolean markQ3(boolean correctQ3){
         if (correctQ3) {
             return true;
@@ -329,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
     Checks the response to question 4 against the correct solution.
     Correct response is stored in solutionQ4 from the resulting randomly generated values for problem that are initialized during launch..
     Returns true if correct.
+    @param responseQ4 is the contents of the edittext for question 4.
      */
     private boolean markQ4(int responseQ4){
         if ( responseQ4 == solutionQ4) {
@@ -344,6 +355,7 @@ public class MainActivity extends AppCompatActivity {
     Checks the response to question 5 against the correct solution.
     Correct response is stored in solutionQ4 from the resulting randomly generated values for problem that are initialized during launch..
     Returns true if correct.
+    @param responseQ5 is the contents of the edittext for question 5.
      */
     private boolean markQ5(int responseQ5){
         if ( responseQ5 == solutionQ5) {
@@ -358,6 +370,7 @@ public class MainActivity extends AppCompatActivity {
     /*
     Calculates the final score as a percentage of correct / number of questions.
     Displays a toast message to user with resulting percentage and ratio.
+    @param correct is the number of correct answers
      */
     private void finalScore(int correct){
         double percentCorrect = (double)correct/5 * 100;
