@@ -45,7 +45,6 @@
         android:id = "@+id/question2Edit"
         style="@style/EditTextView"
         android:layout_width="136dp"
-        android:background="#60ffff52"
         />
 
     <TextView
@@ -84,7 +83,6 @@
         android:id = "@+id/question4Edit"
         style="@style/EditTextView"
         android:layout_width="64dp"
-        android:background="#60ffff52"
         android:inputType="number"
         />
 
@@ -97,7 +95,6 @@
         android:id = "@+id/question5Edit"
         style="@style/EditTextView"
         android:layout_width="64dp"
-        android:background="#60ffff52"
         android:inputType="number"
         />
 

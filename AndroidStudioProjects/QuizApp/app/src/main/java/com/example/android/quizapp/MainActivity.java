@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
         solutionQ4 = orderOpProb4();
         solutionQ5 = orderOpProb5();
         solutionQ2 = randomQ2();
-        missedQuestions = "You missed the following questions:\n"
+        missedQuestions = "You missed the following questions:\n";
     }
 
     /*
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
             emptyAnswer = true;
         }
         else{
-            q1.setTextColor(Color.parseColor("#304fff"));
+            q1.setTextColor(Color.parseColor("#0026ca"));
         }
 
         //Check if edittext for question 3 has input
@@ -250,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
             emptyAnswer = true;
         }
         else{
-            q2.setTextColor(Color.parseColor("#304fff"));
+            q2.setTextColor(Color.parseColor("#0026ca"));
         }
 
         //check if radio button is selected
@@ -260,7 +260,7 @@ public class MainActivity extends AppCompatActivity {
             emptyAnswer = true;
         }
         else{
-            q3.setTextColor(Color.parseColor("#304fff"));
+            q3.setTextColor(Color.parseColor("#0026ca"));
         }
 
         //Check if edittext for question 4 has input
@@ -270,7 +270,7 @@ public class MainActivity extends AppCompatActivity {
             emptyAnswer = true;
         }
         else{
-            q4.setTextColor(Color.parseColor("#304fff"));
+            q4.setTextColor(Color.parseColor("#0026ca"));
         }
 
         //Check if edittext for question 5 has input
@@ -280,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
             emptyAnswer = true;
         }
         else{
-            q5.setTextColor(Color.parseColor("#304fff"));
+            q5.setTextColor(Color.parseColor("#0026ca"));
         }
 
         return emptyAnswer;
