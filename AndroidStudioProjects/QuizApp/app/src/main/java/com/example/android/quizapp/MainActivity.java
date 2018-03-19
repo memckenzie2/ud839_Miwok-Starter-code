@@ -24,8 +24,10 @@ public class MainActivity extends AppCompatActivity {
     private String questionText5;
 
     //String to store missed questions for later display to player.
-    private String missedQuestions = "You missed the following questions:\n";
+    private String missedQuestions;
+    /*
 
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,8 +37,12 @@ public class MainActivity extends AppCompatActivity {
         solutionQ4 = orderOpProb4();
         solutionQ5 = orderOpProb5();
         solutionQ2 = randomQ2();
+        missedQuestions = "You missed the following questions:\n"
     }
 
+    /*
+    This method is called when the order button is clicked.
+     */
     public void onSubmit(View view) {
         int correct = 0;
 
@@ -107,26 +113,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    //Updates question 2 Textview with problem statement
+    /* Updates question 2 Textview with problem statement
+     * @param questionChar is the letter from PEMDAS that is being used for the current version of the question.
+     */
     private void displayProb2(String questionChar) {
         TextView quantityTextView = findViewById(R.id.question2);
         quantityTextView.setText("2. What does the " + questionChar + " in the acronym PEMDAS stand for?");
     }
 
-    //Updates question 5 Textview with problem statement
-    private void displayProb5(String problem) {
-        TextView quantityTextView = findViewById(R.id.question5);
-        quantityTextView.setText(problem);
-    }
-
-    //Updates question 5 Textview with problem statement
+    /* Updates question 4 Textview with problem statement
+    * @param problem is the problem statement.
+    */
     private void displayProb4(String problem) {
         TextView quantityTextView = findViewById(R.id.question4);
         quantityTextView.setText(problem);
     }
 
+    /* Updates question 5 Textview with problem statement
+     * @param problem is the problem statement..
+     */
+    private void displayProb5(String problem) {
+        TextView quantityTextView = findViewById(R.id.question5);
+        quantityTextView.setText(problem);
+    }
+
     /*
-    Chooses a random letter from PEMDAS, updates the question, and assigns the appropriate answer for it.
+    Chooses a random letter from PEMDAS, generates a problem statement for question 2 to be displayed, and returns the correct solution for the problem.
     */
     public String randomQ2(){
         String question = "";
@@ -134,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         Random randNum = new Random();
         int randAns = randNum.nextInt(5);
 
+        //Chooses which letter from PEMDAS with equal probability based on randomly generated value from 0-5.
         switch(randAns){
             case 0: question = "P";
                 answer = "parentheses";
@@ -155,12 +168,34 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        //Updates the Question 2 Textview
         displayProb2(question);
+
         return answer;
     }
 
     /*
-    Generates random numbers to populate: z + a ÷ (d - b * c)
+    Generates random numbers to populate question 4's expression: a - b * c + d
+     */
+    public int orderOpProb4(){
+
+        Random rand = new Random();
+        int solution;
+
+        int a = rand.nextInt(50) + 1;
+        int b = rand.nextInt(50) + 1;
+        int c = rand.nextInt(50) + 1;
+        int d = rand.nextInt(7) + 1;
+        solution = a - b * c + d;
+
+        questionText4 = "4. Solve: \n\n   " + Integer.toString(a) + " - " +  Integer.toString(b)  + " × " + Integer.toString(c) + "+" + Integer.toString(d);
+        displayProb4(questionText4);
+        return solution;
+    }
+
+
+    /*
+    Generates random numbers to populate question 5's expression: z + a ÷ (d - b * c)
     To generate a problem with a whole number solution the random numbers must be generated such that...
     a must be divisible by the correct solution to (d - b * c)
 
@@ -185,32 +220,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /*
-    Generates random numbers to populate: a - b * c + e
-    To generate a problem with a whole number solution the random numbers must be generated such that...
-    a must be divisible by the correct solution to (d - b * c)  AND the most common incorrect solutions (solving inside parentheses from left to right)
-    This ensures a reasonable answer is given even if the student makes a mistake.
-    This will be done by generating b, c, d, and f first and generating a to be a multiple of the result of (d - b * c). The multiple will be the solution to the problem.
+    Ensures that all questions have answers and if not sets the question textview to red.
+    Displays a toastview to user asking them to answer questions in red.
+    Return true if all questiuons have a response, false if one or more do not
+    @param checkBoxSelected is true if a CheckBox for question 1 is selected
+    @param editText2 the contents of the EditText field for question 2
+    @param radioQ3 the id of the selected button in the radiobutton group for question 3. Will be -1 if no button is selected.
+    @param editText4 the contents of the EditText field for question 4
+    @param editText5 the contents of the EditText field for question 5
      */
-    public int orderOpProb4(){
-
-        Random rand = new Random();
-        int solution;
-
-        int a = rand.nextInt(50) + 1;
-        int b = rand.nextInt(50) + 1;
-        int c = rand.nextInt(50) + 1;
-        int d = rand.nextInt(7) + 1;
-        solution = a - b * c + d;
-
-        questionText4 = "4. Solve: \n\n   " + Integer.toString(a) + " - " +  Integer.toString(b)  + " × " + Integer.toString(c) + "+" + Integer.toString(d);
-        displayProb4(questionText4);
-        return solution;
-    }
-
-
     private boolean allQuestionsAnswer(boolean checkBoxSelected, String editText2, int radioQ3,String editText4, String editText5){
         boolean emptyAnswer = false;
 
+        //Check if at least one checkbox is selected,
         TextView q1 = findViewById(R.id.question1);
         if(!checkBoxSelected){
 
@@ -221,6 +243,7 @@ public class MainActivity extends AppCompatActivity {
             q1.setTextColor(Color.parseColor("#304fff"));
         }
 
+        //Check if edittext for question 3 has input
         TextView q2 = findViewById(R.id.question2);
         if(TextUtils.isEmpty(editText2)){
             q2.setTextColor(Color.RED);
@@ -230,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
             q2.setTextColor(Color.parseColor("#304fff"));
         }
 
+        //check if radio button is selected
         TextView q3 = findViewById(R.id.question3);
         if(radioQ3 == -1){
             q3.setTextColor(Color.RED);
@@ -239,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
             q3.setTextColor(Color.parseColor("#304fff"));
         }
 
+        //Check if edittext for question 4 has input
         TextView q4 = findViewById(R.id.question4);
         if(TextUtils.isEmpty(editText4)){
             q4.setTextColor(Color.RED);
@@ -248,6 +273,7 @@ public class MainActivity extends AppCompatActivity {
             q4.setTextColor(Color.parseColor("#304fff"));
         }
 
+        //Check if edittext for question 5 has input
         TextView q5 = findViewById(R.id.question5);
         if(TextUtils.isEmpty(editText5)){
             q5.setTextColor(Color.RED);
@@ -260,6 +286,11 @@ public class MainActivity extends AppCompatActivity {
         return emptyAnswer;
     }
 
+    /*
+    Checks the response to question 1 against the correct solution.
+    Correct response is 2nd and 3rd checkboxes selected.
+    Returns true if correct.
+     */
     private boolean markQ1(boolean check1, boolean check2, boolean check3, boolean check4){
         if (!check1 && check2 && check3 && !check4) {
             return true;
@@ -269,8 +300,13 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    Checks the response to question 2 against the correct solution.
+    Correct response is stored in solutionQ2 and is randomly selected from possible PEMDAS values at launch.
+    Returns true if correct.
+     */
     private boolean markQ2(String responseQ2){
-        if ( responseQ2.toLowerCase() == solutionQ2) {
+        if ( responseQ2.toLowerCase().equals(solutionQ2)) {
             return true;
         }
         else{
@@ -289,6 +325,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    Checks the response to question 4 against the correct solution.
+    Correct response is stored in solutionQ4 from the resulting randomly generated values for problem that are initialized during launch..
+    Returns true if correct.
+     */
     private boolean markQ4(int responseQ4){
         if ( responseQ4 == solutionQ4) {
             return true;
@@ -299,6 +340,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    Checks the response to question 5 against the correct solution.
+    Correct response is stored in solutionQ4 from the resulting randomly generated values for problem that are initialized during launch..
+    Returns true if correct.
+     */
     private boolean markQ5(int responseQ5){
         if ( responseQ5 == solutionQ5) {
             return true;
@@ -309,6 +355,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    /*
+    Calculates the final score as a percentage of correct / number of questions.
+    Displays a toast message to user with resulting percentage and ratio.
+     */
     private void finalScore(int correct){
         double percentCorrect = (double)correct/5 * 100;
         String scoreMessage;
