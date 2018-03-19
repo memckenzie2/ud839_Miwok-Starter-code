@@ -83,7 +83,7 @@
         android:id = "@+id/question4Edit"
         style="@style/EditTextView"
         android:layout_width="64dp"
-        android:inputType="number"
+        android:inputType="number|numberSigned"
         />
 
     <TextView
@@ -95,7 +95,7 @@
         android:id = "@+id/question5Edit"
         style="@style/EditTextView"
         android:layout_width="64dp"
-        android:inputType="number"
+        android:inputType="number|numberSigned"
         />
 
     <Button
