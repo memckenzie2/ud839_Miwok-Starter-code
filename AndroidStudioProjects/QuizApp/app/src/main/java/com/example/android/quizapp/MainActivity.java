@@ -1,10 +1,9 @@
 package com.example.android.quizapp;
 
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -188,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
         int d = rand.nextInt(7) + 1;
         solution = a - b * c + d;
 
-        questionText4 = "4. Solve: \n\n   " + Integer.toString(a) + " - " +  Integer.toString(b)  + " × " + Integer.toString(c) + "+" + Integer.toString(d);
+        questionText4 = "4. Solve: \n\n   " + Integer.toString(a) + " - " + Integer.toString(b) + " × " + Integer.toString(c) + " + " + Integer.toString(d);
         displayProb4(questionText4);
         return solution;
     }

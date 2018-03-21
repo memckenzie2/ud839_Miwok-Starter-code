@@ -11,9 +11,14 @@
     >
 
     <TextView
+        android:id="@+id/title"
+        style="@style/Title"
+        android:text="@string/order_of_operations_quiz" />
+
+    <TextView
         android:id = "@+id/question1"
-        android:text="@string/q1"
-        style="@style/QuestionView" />
+        style="@style/QuestionView"
+        android:text="@string/q1" />
 
     <CheckBox
         android:id = "@+id/q1check1"
@@ -37,9 +42,9 @@
 
     <TextView
         android:id = "@+id/question2"
-        android:text="@string/q2"
+        style="@style/QuestionView"
         android:layout_marginBottom="0dp"
-        style="@style/QuestionView" />
+        android:text="@string/q2" />
 
     <EditText
         android:id = "@+id/question2Edit"
@@ -49,12 +54,12 @@
 
     <TextView
         android:id = "@+id/question3"
-        android:text="@string/q3"
-        style="@style/QuestionView" />
+        style="@style/QuestionView"
+        android:text="@string/q3" />
 
     <RadioGroup
-        style="@style/AnswerView"
-        android:id = "@+id/q3rradiogroup">
+        android:id="@+id/q3rradiogroup"
+        style="@style/AnswerView">
         <RadioButton
             android:id = "@+id/q3radio1"
             style="@style/RadioView"
@@ -76,8 +81,8 @@
 
     <TextView
         android:id = "@+id/question4"
-        android:text="@string/q4"
-        style="@style/QuestionView" />
+        style="@style/QuestionView"
+        android:text="@string/q4" />
 
     <EditText
         android:id = "@+id/question4Edit"
@@ -88,8 +93,8 @@
 
     <TextView
         android:id = "@+id/question5"
-        android:text="@string/q5"
-        style="@style/QuestionView" />
+        style="@style/QuestionView"
+        android:text="@string/q5" />
 
     <EditText
         android:id = "@+id/question5Edit"
@@ -99,9 +104,9 @@
         />
 
     <Button
-        android:text = "@string/submit"
-        android:onClick="onSubmit"
         style="@style/Button"
+        android:onClick="onSubmit"
+        android:text="@string/submit"
         />
 
 </LinearLayout>
